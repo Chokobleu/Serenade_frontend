@@ -1,12 +1,32 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, Modal, TouchableOpacity } from "react-native";
 import React from "react";
 import globalStyles from "../../utils/globalStyles";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { useState } from "react";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-
 const SearchSettingsScreen = () => {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
+  
+    const menuItems = [
+      { id: 1, name: 'Option 1' },
+      { id: 2, name: 'Option 2' },
+      { id: 3, name: 'Option 3' },
+      // ... Add more options as needed
+    ];
+  
+    const handleMenuItemPress = (option) => {
+      setSelectedOption(option);
+      setIsModalVisible(false);
+    };
+  
+    const renderMenuItem = ({ item }) => (
+      <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuItemPress(item)}>
+        <Text style={styles.menuItemText}>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
 // Settings of multi slider - age
 //-----------------------------------------
@@ -52,9 +72,17 @@ const CustomMarker2 = ({ currentValue }) => (
     console.log(values2)
 };
 
+    // const [selectedItem, setSelectedItem] = useState(null);
+    // const dropdownItems = ['Opuuution 1', 'Option 2', 'Option 3', 'Option 4'];
+  
+    // const handleDropdownSelect = (index, option) => {
+    //   setSelectedItem(option);
+    // };
+  
+
 
   return (
-    <View style={[globalStyles.screen, globalStyles.container, styles.content]}>
+    <View style={[globalStyles.screen, globalStyles.container, styles.content, {backgroundColor:"white"}]}>
 
         <Text style={[globalStyles.titleText, styles.title]}>Maximum distance</Text>
 
@@ -133,8 +161,39 @@ const CustomMarker2 = ({ currentValue }) => (
                     <FontAwesome name="plus-circle" size={26}  style={styles.icon2} />
                 </View>
 
-        </View>
+            </View>
 
+        
+
+    {/* Display drop down menu 
+    ------------------------------------------ */}
+<View style={styles.container}>
+      <TouchableOpacity
+        style={styles.menuButton}
+        onPress={() => setIsModalVisible(true)}
+      >
+        <Text style={styles.menuButtonText}>{selectedOption ? selectedOption.name : 'Select an option'}</Text>
+        <FontAwesome name='heart' color="black" size={20} />
+      </TouchableOpacity>
+
+      <Modal visible={isModalVisible} animationType="fade" transparent>
+        <View style={styles.modalContainer}>
+          <FlatList
+            data={menuItems}
+            renderItem={renderMenuItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.menuList}
+          />
+
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
 
     </View>
   );
@@ -143,7 +202,56 @@ const CustomMarker2 = ({ currentValue }) => (
 
 const styles = StyleSheet.create({
 
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width:"100%"
+      },
+      menuButton: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
+        flexDirection:"row",
+        justifyContent: "space-between",
+        width: "100%",
 
+      },
+      menuButtonText: {
+        fontSize: 16,
+      },
+      modalContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width:"100%",
+        height:"100%",
+      },
+      menuList: {
+        backgroundColor: 'white',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 4,
+        marginTop:100,
+        width:300,
+      },
+      menuItem: {
+        paddingVertical: 8,
+      },
+      menuItemText: {
+        fontSize: 16,
+      },
+      closeButton: {
+        marginTop: 20,
+      },
+      closeButtonText: {
+        fontSize: 20,
+        color: 'grey',
+      },
+
+
+//-----------------------------------------------------------
     markerContainer: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -173,7 +281,6 @@ const styles = StyleSheet.create({
 
     sliderWidth: {
         width:"100%",
-        // height:18,
       },
 
     multiSliderContainer: {
@@ -228,7 +335,6 @@ const styles = StyleSheet.create({
     minMaxText: {
         color: "white",
     }
-
-  })
+    });
 
 export default SearchSettingsScreen;
