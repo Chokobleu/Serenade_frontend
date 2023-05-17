@@ -7,11 +7,8 @@ const ChatUserAvatar = (props) => {
     // // Initialisation of connected status
     const displayConnectStyle = props.connected;
     const displayAvatarStyle = props.avatarDisplay;
-    // console.log(displayAvatarStyle)
-
     const size = props.size;
     const avatarImage = props.avatarImage;
-    // console.log(image)
 
     
   return (
