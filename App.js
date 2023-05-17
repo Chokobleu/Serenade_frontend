@@ -5,7 +5,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
-import ChatScreen from "./src/screens/ChatScreen";
+import SearchSettings from "./src/screens/SearchSettings";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,7 +31,7 @@ export default function App() {
         style="light"
       />
       <SafeAreaView className="flex-1" onLayout={onLayoutRootView}>
-        <ChatScreen />
+        <SearchSettings />
       </SafeAreaView>
     </PaperProvider>
   );

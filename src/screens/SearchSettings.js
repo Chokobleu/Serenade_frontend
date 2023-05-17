@@ -8,8 +8,15 @@ import DropDownMenu from '../components/DropDownMenu';
 
 const SearchSettingsScreen = () => {
 
-    const menuOptions = ['Option 1', 'Option 2', 'Option 3'];
 
+
+    const menuGender = ['Man', 'Woman', 'No Binary', 'Man', 'Woman', 'No Binary', 'Man', 'Woman', 'No Binary'];
+    const menuLocation = ['Paris', 'Marseille', 'Bordeaux', 'Toulouse', 'Colombes', 'Taverny', 'Creil', 'Créteil'];
+    const menuSexuality = ['heterosexual', 'bisexual', 'pansexual'];
+
+    const placeHolderGender = "Gender";
+    const placeHolderLocation = "City";
+    const placeHolderSexuality = "Sexuality";
 
     // Settings of multi slider - age
     //-----------------------------------------
@@ -59,11 +66,25 @@ const SearchSettingsScreen = () => {
     return (
         <View style={[globalStyles.screen, globalStyles.container, styles.content]}>
 
+            <Text style={[globalStyles.titleText, {alignSelf:"center"}]}>Search setting</Text>
+            <Text style={[globalStyles.mainText, {alignSelf:"center", fontSize:14}]}>Refine your search</Text>
 
+
+
+
+            {/* Display drop down menu location
+    ------------------------------------------ */}
+            <View style={{ width: "100%" }}>
+
+                <Text style={[globalStyles.titleText, styles.title]}>Your current location</Text>
+
+                <DropDownMenu menuOptions={menuLocation} placeHolder={placeHolderLocation} />
+
+            </View>
 
             {/* Display of multi slider - distance 
 ------------------------------------------ */}
-            <View>
+            <View style={styles.section}>
 
                 <Text style={[globalStyles.titleText, styles.title]}>Maximum distance</Text>
 
@@ -147,15 +168,30 @@ const SearchSettingsScreen = () => {
             </View>
 
 
-            {/* Display drop down menu 
+            {/* Display drop down menu gender
     ------------------------------------------ */}
             <View style={styles.section}>
 
                 <Text style={[globalStyles.titleText, styles.title]}>What you are looking for</Text>
 
-                <DropDownMenu menuOptions={menuOptions} placeHolder="coucou" />
+                <DropDownMenu menuOptions={menuGender} placeHolder={placeHolderGender} />
 
             </View>
+
+
+            {/* Display drop down menu location
+    ------------------------------------------ */}
+            <View style={styles.section}>
+
+                <Text style={[globalStyles.titleText, styles.title]}>You consider yourself to be</Text>
+
+                <DropDownMenu menuOptions={menuSexuality} placeHolder={placeHolderSexuality} />
+
+            </View>
+
+            {/* Valid setting button
+    ------------------------------------------ */}
+            <TouchableOpacity style={styles.validButton}><Text style={styles.textButton}>Save my preferences</Text></TouchableOpacity>
 
         </View>
     );
@@ -164,9 +200,29 @@ const SearchSettingsScreen = () => {
 
 const styles = StyleSheet.create({
 
+//    à supprimer quand bouton implanté
+// ---------------------------------------
+   
+    validButton : {
+        marginTop:30,
+        backgroundColor: "#EC7955",
+        borderRadius:10,
+        height:48,
+        width:"90%",
+        justifyContent:"center",
+        alignItems:"center",
+
+    },
+
+    textButton: {
+        alignSelf: "center"
+    },
+    
+ // ---------------------------------------
+   
     section: {
         paddingTop: 20,
-        width:"100%",
+        width: "100%",
     },
 
     // Multi sliders - age & distance
@@ -208,7 +264,7 @@ const styles = StyleSheet.create({
 
     iconContainer: {
         width: "10%",
-        justifyContent: "center",
+        justifyContent: "flex-start",
     },
 
     multiSlider: {
@@ -219,11 +275,14 @@ const styles = StyleSheet.create({
     icon1: {
         alignSelf: "flex-start",
         color: "#EC7955",
+        paddingTop:32,
     },
 
     icon2: {
         alignSelf: "flex-end",
-        color: "#EC7955"
+        color: "#EC7955",
+        paddingTop:32,
+
     },
 
     content: {
@@ -232,8 +291,8 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop: 20,
-        marginBottom: 10,
+        marginTop: 15,
+        // marginBottom: 10,
     },
 
     headerSlider: {

@@ -98,13 +98,14 @@ const ChatScreen = () => {
     {
       "firstname": "Bob",
       "message": "Oui, absolument. Tu me raconteras comment c'était.",
-      "date": "2022-04-21T10:15:00Z"}
-    ]);
+      "date": "2022-04-21T10:15:00Z"
+    }
+  ]);
 
 
   // Diplay end of scrollview at the first opening
   //-------------------------------------------------------------
-  
+
   useEffect(() => {
     if (isScrollViewAtEnd) {
       scrollViewRef.current.scrollToEnd({ animated: false });
@@ -118,7 +119,7 @@ const ChatScreen = () => {
   //--------------------------------------------------------------
 
   const connected = "flex";
-  const avatarImage = { img: require("../../assets/avatar.jpg")};
+  const avatarImage = { img: require("../../assets/avatar.jpg") };
   const avatarDisplay = "flex";
   const avatarMsgSize = 40;
   const avatarHeaderSize = 70;
@@ -141,7 +142,7 @@ const ChatScreen = () => {
     console.log("return");
   }
 
-  
+
 
   // Dislike 
   //--------------------------------------------------------------
@@ -156,64 +157,64 @@ const ChatScreen = () => {
   //--------------------------------------------------------------
 
   const allMessages = messages.map((data, i) => {
-    
+
     const date = new Date(data.date);
-    const hours = date.getHours()+":"+date.getMinutes()+" am";
-    
-    if(data.firstname == "Alice"){
-      return <ChatRecipientMessage key={i} date={hours} text={data.message} connected={connected} size={avatarMsgSize} avatarImage={avatarImage.img} avatarDisplay={avatarDisplay}  />;
+    const hours = date.getHours() + ":" + date.getMinutes() + " am";
+
+    if (data.firstname == "Alice") {
+      return <ChatRecipientMessage key={i} date={hours} text={data.message} connected={connected} size={avatarMsgSize} avatarImage={avatarImage.img} avatarDisplay={avatarDisplay} />;
     }
-    else{
-      return <ChatSenderMessage key={i} date={hours} text={data.message}/>
+    else {
+      return <ChatSenderMessage key={i} date={hours} text={data.message} />
     }
   });
 
   //--------------------------------------------------------------
 
   return (
-    <View  style={styles.screen2}>
+    <View style={styles.screen2}>
       <View style={styles.header}>
         <View style={styles.topHeader}>
 
           <TouchableOpacity onPress={() => handleReturn()} style={styles.returnIcon}>
-              <FontAwesome name='arrow-left' color="#EC7955" size={20} />
+            <FontAwesome name='arrow-left' color="#EC7955" size={20} />
           </TouchableOpacity>
 
-            <View style={styles.user}>
-              <ChatUserAvatar connected={connected} size={avatarHeaderSize} avatarImage={avatarImage.img} avatarDisplay={avatarDisplay} />
+          <View style={styles.user}>
+            <ChatUserAvatar connected={connected} size={avatarHeaderSize} avatarImage={avatarImage.img} avatarDisplay={avatarDisplay} />
           </View>
-        
+
           <TouchableOpacity onPress={() => handleDislkike()} style={styles.dislikeIcon}>
             <FontAwesome name="heart" color="#EC7955" size={20} />
-          </TouchableOpacity>  
+          </TouchableOpacity>
 
         </View>
 
         <Text style={styles.headerText} >Elisabeth</Text>
         <View style={styles.headerBorder}></View>
-      
-
-    </View>
 
 
-      <ScrollView 
-        style={styles.scroll} 
+      </View>
+
+
+      <ScrollView
+        style={styles.scroll}
         className="p-6"
         ref={scrollViewRef}
         onLayout={handleScrollViewLayout}
         contentContainerStyle={styles.scrollContentContainer}
-        >
+      >
 
         {allMessages}
 
       </ScrollView>
 
       <View keyboardShouldPersistTaps="handled" style={styles.sendContainer}>
-        <View  style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
           <FontAwesome name='paperclip' style={styles.papeclip} color="#EC7955" size={26} />
           <TextInput onChangeText={(value) => setMessageText(value)} placeholder={"Type a message"} value={messageText} style={styles.input} />
           <TouchableOpacity onPress={() => handleSendMessage()} style={styles.sendButton}>
-          <FontAwesome name='send' color="#ffffff" size={16} />
+            <FontAwesome name='send' color="#ffffff" size={16} />
           </TouchableOpacity>
         </View>
       </View>
@@ -224,92 +225,92 @@ const ChatScreen = () => {
 
 };
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
-    // page Content
-    //----------------------------------------
+  // page Content
+  //----------------------------------------
 
-    screen2: {
-      flex: 1,
-      backgroundColor: "#1d2635",
-    },
+  screen2: {
+    flex: 1,
+    backgroundColor: "#1d2635",
+  },
 
-    // header
-    //----------------------------------------
+  // header
+  //----------------------------------------
 
-    topHeader: {
-      backgroundColor:"#ff0000",
-      width:"100%",
-    },
+  topHeader: {
+    backgroundColor: "#ff0000",
+    width: "100%",
+  },
 
-    header: {
-      width:"100%",
-      alignItems: "center",
-      marginTop: 25,
-    },
+  header: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 25,
+  },
 
-    topHeader:{
-      width:"100%",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      paddingRight:25,
-      paddingLeft: 25,
-    },
+  topHeader: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingRight: 25,
+    paddingLeft: 25,
+  },
 
-    headerText: {
-      color:"#ffffff",
-      fontSize: 18,
-      marginTop: 5,
-    },
+  headerText: {
+    color: "#ffffff",
+    fontSize: 18,
+    marginTop: 5,
+  },
 
-    headerBorder: {
-      borderBottomWidth: 1,
-      borderBottomColor: "#ffffff",
-      width:"100%",
-      height:10,
-    },
+  headerBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ffffff",
+    width: "100%",
+    height: 10,
+  },
 
-    // messages content
-    //----------------------------------------
+  // messages content
+  //----------------------------------------
 
-    scroll: {
-      flex: 1,
-    },
+  scroll: {
+    flex: 1,
+  },
 
-    scrollContentContainer: {
-      flexGrow: 1,
-      justifyContent: 'flex-end',
-      paddingBottom:30,
-      paddingRight: 25,
-      paddingLeft: 20,
+  scrollContentContainer: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 30,
+    paddingRight: 25,
+    paddingLeft: 20,
 
-    },
+  },
 
-    // send messages container
-    //----------------------------------------
+  // send messages container
+  //----------------------------------------
 
 
   sendContainer: {
-    width:"100%",
+    width: "100%",
     justifyContent: "center",
-    flexDirection:"row",
+    flexDirection: "row",
   },
 
   inputContainer: {
     width: 327,
-    height:48,
+    height: 48,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems:"center",
+    alignItems: "center",
     marginBottom: 30,
     marginTop: 'auto',
     background: 'transparent',
     paddingLeft: 15,
     paddingRight: 15,
-    backgroundColor:"#ffffff",
-    borderRadius:32,
+    backgroundColor: "#ffffff",
+    borderRadius: 32,
   },
-  
+
   input: {
     width: '70%',
     borderRadius: 30,
@@ -321,11 +322,11 @@ const ChatScreen = () => {
     backgroundColor: '#EC7955',
     alignItems: 'center',
     justifyContent: 'center',
-    height:32,
-    width:32,
-    color:"#EC7955",
+    height: 32,
+    width: 32,
+    color: "#EC7955",
   },
 
-  })
+})
 
 export default ChatScreen;

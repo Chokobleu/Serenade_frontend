@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, FlatList, Modal, TouchableOpacity, Animated, TouchableWithoutFeedback  } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, FlatList, Modal, TouchableOpacity, Animated, TouchableWithoutFeedback  } from "react-native";
 import React from "react";
 import globalStyles from "../../utils/globalStyles";
 import { useState, useRef, useEffect } from "react";
@@ -32,7 +32,7 @@ const DropDownMenu = (props) => {
       <Modal visible={modalVisible} transparent animationType="fade">
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
+            <ScrollView style={styles.modalContainer}>
               {menuOptions.map((option) => (
                 <TouchableOpacity
                   key={option}
@@ -42,7 +42,7 @@ const DropDownMenu = (props) => {
                   <Text style={styles.optionButtonText}>{option}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
       // Container with options in modal
       modalContainer: {
         width: '70%',
+        maxHeight:"50%",
         backgroundColor: '#1D2635',
         borderRadius: 5,
         paddingTop: 20,
