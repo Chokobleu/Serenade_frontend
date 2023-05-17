@@ -9,6 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./navigation/StackNavigator";
 import ItsAMatch from "./src/screens/ItsAMatch";
 SplashScreen.preventAutoHideAsync();
+import LinkPartner from "./src/screens/LinkPartner";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -34,9 +35,10 @@ export default function App() {
       <SafeAreaView
         className="flex-1"
         onLayout={onLayoutRootView}
-        style={{ backgroundColor: globalStyles.appBackgroundColor }}
+        style={{ backgroundColor: globalStyles.appBackgroundColor, opacity: 0.5 }}
       >
-        <ItsAMatch />
+        <LinkPartner />
+        {/* <ItsAMatch /> */}
         {/* <NavigationContainer>
           <StackNavigator />
         </NavigationContainer> */}
