@@ -7,6 +7,7 @@ import { Foundation } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import globalStyles from "../utils/globalStyles";
+import { View, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,15 +24,16 @@ export default function TabNavigator() {
                 name="heart-flash"
                 size={30}
                 color={color}
+                style={{ marginTop: 20 }}
               />
             );
           }
           if (route.name === "HomeScreen") {
-            icon = <Foundation name="home" size={30} color={color} />;
+            icon = <Foundation name="home" size={30} color={color} style={{ marginTop: 20 }}/>;
           }
           if (route.name === "MessagesScreen") {
             icon = (
-              <Ionicons name="chatbubbles-sharp" size={30} color={color} />
+              <Ionicons name="chatbubbles-sharp" size={30} color={color} style={{ marginTop: 20 }}/>
             );
           }
 
@@ -41,7 +43,7 @@ export default function TabNavigator() {
         tabBarActiveTintColor: globalStyles.iconActiveColor,
         tabBarInactiveTintColor: globalStyles.iconInactiveColor,
         headerShown: false,
-        tabBarStyle: { height: 70 },
+        // tabBarStyle: {  },
         tabBarOptions: {
           showLabel: false, // Hide the labels of the tabs
         },
