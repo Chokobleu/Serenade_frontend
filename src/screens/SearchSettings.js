@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, FlatList, Modal, TouchableOpacity, Animated, TouchableWithoutFeedback } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, Modal, TextInput, TouchableOpacity, Animated, TouchableWithoutFeedback } from "react-native";
 import React from "react";
 import globalStyles from "../../utils/globalStyles";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
@@ -8,15 +8,56 @@ import DropDownMenu from '../components/DropDownMenu';
 
 const SearchSettingsScreen = () => {
 
-
-
     const menuGender = ['Man', 'Woman', 'No Binary', 'Man', 'Woman', 'No Binary', 'Man', 'Woman', 'No Binary'];
-    const menuLocation = ['Paris', 'Marseille', 'Bordeaux', 'Toulouse', 'Colombes', 'Taverny', 'Creil', 'Créteil'];
     const menuSexuality = ['heterosexual', 'bisexual', 'pansexual'];
 
     const placeHolderGender = "Gender";
     const placeHolderLocation = "City";
     const placeHolderSexuality = "Sexuality";
+
+    // Settings for drop down menu location
+    //------------------------------------------------
+    const [searchTerm, setSearchTerm] = useState("");
+    const [results, setResults] = useState([]);
+    const apiKeyOpenCage = "b92119784c034cf2a530f39efb4ad6c4"
+
+
+    // Purchase filter countries for drop down menu
+    //------------------------------------------------
+    const handleSearchTermChange = (text) => {
+        setSearchTerm(text);
+        if (text.length > 2) {
+            fetch(
+                `https://api.opencagedata.com/geocode/v1/json?limit=10&q=${text}&key=${apiKeyOpenCage}`
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    setResults(json.results);
+
+                    console.log(json.results)
+                })
+                .catch((error) => console.error(error));
+        } else {
+            setResults([]);
+        }
+
+    };
+
+    // Country select for display and profile settings
+    // ---------------------------------------------------
+
+    const handleCitySelect = (city, geometry) => {
+        console.log(city)
+        const cleanCity = city.replace(/[0-9]/g, '').trim();
+        const cityToSet=cleanCity.split(',')[0].trim()
+        setSearchTerm(cityToSet);
+        setResults([]);
+        
+        //LATITUDE LONGITUDE (geometry.lat & geometry.lng)
+        console.log(geometry)
+
+    };
+
 
     // Settings of multi slider - age
     //-----------------------------------------
@@ -66,25 +107,44 @@ const SearchSettingsScreen = () => {
     return (
         <View style={[globalStyles.screen, globalStyles.container, styles.content]}>
 
-            <Text style={[globalStyles.titleText, {alignSelf:"center"}]}>Search setting</Text>
-            <Text style={[globalStyles.mainText, {alignSelf:"center", fontSize:14}]}>Refine your search</Text>
+            <Text style={[globalStyles.titleText, { alignSelf: "center" }]}>Search setting</Text>
+            <Text style={[globalStyles.mainText, { alignSelf: "center", fontSize: 14 }]}>Refine your search</Text>
 
 
 
 
             {/* Display drop down menu location
     ------------------------------------------ */}
-            <View style={{ width: "100%" }}>
 
-                <Text style={[globalStyles.titleText, styles.title]}>Your current location</Text>
+            <Text style={[globalStyles.titleText, styles.title]}>Your position</Text>
 
-                <DropDownMenu menuOptions={menuLocation} placeHolder={placeHolderLocation} />
+            <TextInput style={styles.locationInput}
+                onChangeText={handleSearchTermChange}
+                value={searchTerm}
+                placeholder="Country"
+                placeholderTextColor="#888888"
+            />
 
+            <View style={styles.section}>
+                <FlatList
+                    style={{ backgroundColor: "#1D2635", width: "100%" }}
+                    data={results}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={styles.itemCity} onPress={() => handleCitySelect(item.formatted, item.geometry)}>
+                            <Text style={{ color: "white" }}>{`${item.formatted}`}</Text>
+                        </TouchableOpacity>
+                    )}
+                    key={(item) => item.place_id} // Use item.place_id as the unique key
+                />
             </View>
 
             {/* Display of multi slider - distance 
 ------------------------------------------ */}
-            <View style={styles.section}>
+
+
+            <View>
+
+
 
                 <Text style={[globalStyles.titleText, styles.title]}>Maximum distance</Text>
 
@@ -200,26 +260,47 @@ const SearchSettingsScreen = () => {
 
 const styles = StyleSheet.create({
 
-//    à supprimer quand bouton implanté
-// ---------------------------------------
-   
-    validButton : {
-        marginTop:30,
+
+    // Location input
+    //----------------------------------------
+
+    locationInput: {
+        width: "100%",
+        color: "#ffffff",
+        height: 30,
+        borderBottomColor: "#ffffff",
+        borderBottomWidth: 1,
+        color: '#888888',
+        fontSize: 16,
+    },
+
+    itemCity: {
+        minHeight: 35,
+        borderBottomColor: "grey",
+        borderBottomWidth: 1,
+        justifyContent: "center",
+    },
+
+    //    à supprimer quand bouton implanté
+    // ---------------------------------------
+
+    validButton: {
+        marginTop: 30,
         backgroundColor: "#EC7955",
-        borderRadius:10,
-        height:48,
-        width:"90%",
-        justifyContent:"center",
-        alignItems:"center",
+        borderRadius: 10,
+        height: 48,
+        width: "90%",
+        justifyContent: "center",
+        alignItems: "center",
 
     },
 
     textButton: {
         alignSelf: "center"
     },
-    
- // ---------------------------------------
-   
+
+    // ---------------------------------------
+
     section: {
         paddingTop: 20,
         width: "100%",
@@ -275,13 +356,13 @@ const styles = StyleSheet.create({
     icon1: {
         alignSelf: "flex-start",
         color: "#EC7955",
-        paddingTop:32,
+        paddingTop: 32,
     },
 
     icon2: {
         alignSelf: "flex-end",
         color: "#EC7955",
-        paddingTop:32,
+        paddingTop: 32,
 
     },
 
@@ -292,7 +373,7 @@ const styles = StyleSheet.create({
 
     title: {
         marginTop: 15,
-        // marginBottom: 10,
+        marginBottom: 10,
     },
 
     headerSlider: {
