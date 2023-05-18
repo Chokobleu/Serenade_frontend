@@ -36,10 +36,10 @@ export default function App() {
         onLayout={onLayoutRootView}
         style={{ backgroundColor: globalStyles.appBackgroundColor }}
       >
-        <ItsAMatch />
-        {/* <NavigationContainer>
+        {/* <ItsAMatch /> */}
+        <NavigationContainer>
           <StackNavigator />
-        </NavigationContainer> */}
+        </NavigationContainer>
       </SafeAreaView>
     </PaperProvider>
   );
