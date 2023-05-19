@@ -2,8 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React , { useState }from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import globalStyles from "../../utils/globalStyles";
-import ImageCarousel from '../components/Carousel';
-import MyCarousel from '../components/CarouselParallax';
+import ImageCarousel from '../components/Carousel'
 
 const HomeScreen = () => {
   const [currentProfile, setCurrentProfile] = useState(0);
@@ -16,7 +15,9 @@ const HomeScreen = () => {
           'https://static.lacapsule.academy/faceup/picture1.jpg',
           'https://static.lacapsule.academy/faceup/picture1.jpg',
           'https://static.lacapsule.academy/faceup/picture1.jpg',
-          'https://static.lacapsule.academy/faceup/picture1.jpg'],
+          'https://static.lacapsule.academy/faceup/picture1.jpg',
+          'https://i.imgur.com/KZsmUi2l.jpg',
+        'https://i.imgur.com/KZsmUi2l.jpg',],
       name: 'John',
       city: 'New York',
       age: 25,
@@ -114,7 +115,7 @@ const HomeScreen = () => {
       </View>
       <View style={globalStyles.container} className=''>
         <View style={styles.photos}>
-          <MyCarousel images={profile.imageUrl} />
+          <ImageCarousel images={profile.imageUrl} />
         </View>
         <View style={styles.profil}>
           <View style={styles.cardContainer}>
@@ -192,10 +193,10 @@ const styles = StyleSheet.create({
     //  backgroundColor:'red',
     width: '90%',
     justifyContent: "space-between",
-    margin: 10,
+    margin: 5,
     alignItems: 'center',
     flexDirection: "row",
-    paddingTop: 0
+    paddingTop: 10
 
   },
   profil: {
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3B485E",
     padding: 10,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 10,
     marginLeft: 0,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 10,
+    
   },
 
 
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
     marginLeft: 0
   },
   relationship: {
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 0
   },
 
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   partner: {
     flexDirection: "row",
     alignItems: 'center',
-    padding: 10,
+    padding: 5,
   },
 
   horizontalLine: {
@@ -283,14 +284,14 @@ const styles = StyleSheet.create({
     borderBottomColor: 'white',
     borderBottomWidth: 1,
     // marginVertical: 20,
-    paddingBottom: 10,
+    paddingBottom: 5,
     marginBottom: 0,
   },
   report: {
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: "center",
-    padding: 10,
+    padding: 5,
   }
 });
 export default HomeScreen;

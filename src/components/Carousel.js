@@ -3,6 +3,7 @@ import React from "react";
 import Carousel from 'react-native-snap-carousel';
 
 
+
 export default function ImageCarousel({ images }) {
     const renderItem = ({ item, index }) => {
       const { width } = Dimensions.get('window');
@@ -26,11 +27,11 @@ export default function ImageCarousel({ images }) {
         data={images}
         renderItem={renderItem}
         sliderWidth={Dimensions.get('window').width}
-        itemWidth={Dimensions.get('window').width - 60}
+        itemWidth={Dimensions.get('window').width - 100}
         layout='stack'
         loop
         decelerationRate={0.0005}
-        layoutCardOffset={20}
+        layoutCardOffset={40}
       />
     );
   }
@@ -42,16 +43,17 @@ export default function ImageCarousel({ images }) {
       justifyContent: 'center',
     },
     image: {
-      aspectRatio: 1,
-      width: '50%',
+      aspectRatio: 1.2,
+      width: '80%',
       // height: '50%',
-      borderRadius: 10,
+      borderRadius: 30,
     },
     mainImage: {
-      transform: [{ scale: 1 }], // Taille de l'image principale
+      transform: [{ scale: 1}], // Taille de l'image principale
     },
     secondaryImage: {
-      transform: [{ scale: 1 }], // Taille des images secondaires
+      transform: [{ scale: 1 }],
+       // Taille des images secondaires
     },
   });
   

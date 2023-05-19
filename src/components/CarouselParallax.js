@@ -21,6 +21,7 @@ export default function MyCarousel({ images }) {
     }, []);
   
     const renderItem = ({ item, index }, parallaxProps) => {
+        
       return (
         <View style={styles.carouselItem}>
           <ParallaxImage
