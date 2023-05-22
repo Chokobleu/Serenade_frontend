@@ -27,6 +27,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
   console.log(userToken);
 
   const [allSearchUsers, setAllSearchUsers] = useState([]);
+
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const closeSearchSettings = () => {
