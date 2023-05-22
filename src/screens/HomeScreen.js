@@ -24,10 +24,9 @@ import { useSelector } from "react-redux";
 
 const HomeScreen = ({ navigation, itsAMatch }) => {
   const userToken = useSelector((state) => state.user.token);
-  console.log(userToken);
+  console.log("userToken : "+userToken);
 
   const [allSearchUsers, setAllSearchUsers] = useState([]);
-
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const closeSearchSettings = () => {
@@ -52,14 +51,16 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
     return age;
   }
 
-  useEffect(() => {
+  useEffect(() => {console.log(userToken)
     fetch('http://192.168.10.134:3000/propositions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: userToken}),
+      
     }).then(response => response.json())
       .then(data => {
         if (data.result) {
+          console.log(data.result)
           setAllSearchUsers(data.result)
         }
       });
@@ -75,7 +76,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
     obj.age = calculateAge(obj.birthdate);
   });
 
-  console.log(allUsers)
+  console.log(allSearchUsers)
 
   return (
     <View style={globalStyles.screen}>
@@ -105,7 +106,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
           onSwipedRight={(card) => console.log(card)}
         >
           {/* Map trough an array of potential match for our user */}
-          {allUsers.map((user, index) => (
+          {allSearchUsers.map((user, index) => (
             <Card
               className="h-full"
               style={{ backgroundColor: globalStyles.appBackgroundColor }}
