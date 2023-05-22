@@ -5,9 +5,9 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import globalStyles from "../../utils/globalStyles";
-import { allUsers } from "../../fakeData/allUsers";
+// import { allUsers } from "../../fakeData/allUsers";
 import SearchSettings from "./SearchSettings";
 import ProfileCarousel from "../components/ProfileCarousel";
 import CardStack, { Card } from "react-native-card-stack-swiper";
@@ -20,16 +20,62 @@ import UserPartner from "../components/UserPartner";
 import { Divider } from "react-native-paper";
 import { useSelector } from "react-redux";
 
+
+
 const HomeScreen = ({ navigation, itsAMatch }) => {
   const userToken = useSelector((state) => state.user.token);
   console.log(userToken);
+
+  const [allSearchUsers, setAllSearchUsers] = useState([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
   const closeSearchSettings = () => {
     setSettingsOpen(false);
   };
+
   const openSearchSettings = () => {
     setSettingsOpen(true);
   };
+
+  function calculateAge(dateOfBirth) {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+  
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+  
+    return age;
+  }
+
+  useEffect(() => {
+    fetch('http://192.168.10.134:3000/propositions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: userToken}),
+    }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          setAllSearchUsers(data.result)
+        }
+      });
+
+      console.log(allSearchUsers)
+  
+  }, []);
+
+  
+
+
+  allSearchUsers.forEach(obj => {
+    obj.age = calculateAge(obj.birthdate);
+  });
+
+  console.log(allUsers)
+
   return (
     <View style={globalStyles.screen}>
       <View style={globalStyles.container}>
@@ -83,7 +129,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
                         <Text
                           style={[globalStyles.mainText, { marginLeft: 10 }]}
                         >
-                          {user.firstname}
+                          {user.name}
                         </Text>
                       </View>
                       <View className="flex-row mb-2.5">
@@ -96,7 +142,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
                           className="truncate"
                           style={[globalStyles.mainText, { marginLeft: 10 }]}
                         >
-                          {user.city}
+                          {user.location.city}
                         </Text>
                       </View>
                       <View className="flex-row mb-2.5">
@@ -122,7 +168,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
                           className="truncate"
                           style={[globalStyles.mainText, { marginLeft: 10 }]}
                         >
-                          {user.jobTitle}
+                          {user.occupation}
                         </Text>
                       </View>
                     </View>
@@ -185,7 +231,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
                     style={{ backgroundColor: globalStyles.cardColor }}
                   >
                     <Text className="mb-2" style={globalStyles.titleTextPink}>
-                      What you need to know about Julia
+                      What you need to know about {user.name}
                     </Text>
                     <Text style={globalStyles.mainText}>
                       {user.description}
@@ -236,3 +282,4 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
 };
 
 export default HomeScreen;
+
