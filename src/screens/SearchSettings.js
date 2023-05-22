@@ -21,8 +21,8 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import ChooseYourCity from "../components/ChooseYourCity";
 
 const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
-  const [genderSearched, setGenderSearched] = useState("Woman");
-  const [partnerSexuality, setPartnerSexuality] = useState("Gay");
+  const [genderSearched, setGenderSearched] = useState("");
+  const [partnerSexuality, setPartnerSexuality] = useState("");
   const [userCity, setUserCity] = useState({});
 
   const getCity = (value) => {
@@ -60,14 +60,20 @@ const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
   };
 
   const handleSaveSearchSettings = () => {
-    console.log({
-      genderSearched,
-      partnerSexuality,
-      maxDistance: maxDistance[0],
-      ageMin: ageRange[0],
-      ageMax: ageRange[1],
-      userCity,
-    });
+    console.log(userCity)
+    // console.log({
+      
+    // // search:{
+    // //         maxDistance: maxDistance[0],
+    // //         ageMin: ageRange[0],
+    // //         ageMax: ageRange[1],
+    // //         genderLiked: genderSearched,
+    // //         sexualityLiked: partnerSexuality,
+    // //       }
+    //   // city:{ 
+    //   //     userCity,
+    //   //   }
+    // });
   };
 
   return (

@@ -42,7 +42,7 @@ const ChooseYourCity = ({ getCity }) => {
     setResults([]);
 
     getCity({
-      name: city,
+      name: cleanCity,
       lat: geometry.lat,
       lng: geometry.lng,
     });
