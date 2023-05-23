@@ -19,6 +19,7 @@ import { Feather } from "@expo/vector-icons";
 import UserPartner from "../components/UserPartner";
 import { Divider } from "react-native-paper";
 import { useSelector } from "react-redux";
+import { Linking } from 'react-native';
 
 const HomeScreen = ({ navigation, itsAMatch }) => {
   const userToken = useSelector((state) => state.user.token);
@@ -30,6 +31,16 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
   const openSearchSettings = () => {
     setSettingsOpen(true);
   };
+
+  const openMessenger = (name) => {
+    const destinataire = 'contact@serenade.com';
+    const sujet = `Report profil of ${name}`;
+    const corps = 'I want to report this person who disrespected me.';
+
+  const url = `mailto:${destinataire}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+  Linking.openURL(url);
+  }
+
   return (
     <View style={globalStyles.screen}>
       <View style={globalStyles.container}>
@@ -214,7 +225,7 @@ const HomeScreen = ({ navigation, itsAMatch }) => {
 
                   <TouchableOpacity
                     className="flex-row justiy-center items-center"
-                    onPress={() => console.log("contact us")}
+                    onPress={() => openMessenger(user.firstname)}
                   >
                     <FontAwesome
                       name="flag"
