@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   Modal,
   TouchableOpacity,
@@ -21,15 +22,17 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import ChooseYourCity from "../components/ChooseYourCity";
 
 const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
+  const userToken = useSelector((state) => state.user.token);
   const [genderSearched, setGenderSearched] = useState("");
   const [partnerSexuality, setPartnerSexuality] = useState("");
   const [userCity, setUserCity] = useState({});
+
 
   const getCity = (value) => {
     setUserCity(value);
   };
   //Initial values for the sliders
-  const [ageRange, setAgeRange] = useState([0, 50, 100]);
+  const [ageRange, setAgeRange] = useState([30, 55]);
   const [maxDistance, setMaxDistance] = useState(30);
 
   //Markers for the sliders
@@ -60,20 +63,20 @@ const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
   };
 
   const handleSaveSearchSettings = () => {
-    console.log(userCity)
-    // console.log({
+      const data = {
       
-    // // search:{
-    // //         maxDistance: maxDistance[0],
-    // //         ageMin: ageRange[0],
-    // //         ageMax: ageRange[1],
-    // //         genderLiked: genderSearched,
-    // //         sexualityLiked: partnerSexuality,
-    // //       }
-    //   // city:{ 
-    //   //     userCity,
-    //   //   }
-    // });
+          search:{
+                  maxDistance: maxDistance,
+                  ageMin: ageRange[0],
+                  ageMax: ageRange[1],
+                  genderLiked: genderSearched,
+                  sexualityLiked: partnerSexuality,
+                  },
+          location:userCity,
+          token: userToken
+
+    };
+    console.log(data)
   };
 
   return (
