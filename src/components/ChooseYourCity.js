@@ -42,9 +42,9 @@ const ChooseYourCity = ({ getCity }) => {
     setResults([]);
 
     getCity({
-      name: cityToSet,
-      lat: geometry.lat,
-      lng: geometry.lng,
+      city: cityToSet,
+      latitude: geometry.lat,
+      longitude: geometry.lng,
     });
   };
 

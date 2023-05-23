@@ -65,10 +65,10 @@ const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
   };
 
   const handleSaveSearchSettings = () => {
-      
-    const data = {
+    
+    const userData = {
           search:{
-                  maxDistance: maxDistance,
+                  maxDistance: maxDistance[0],
                   ageMin: ageRange[0],
                   ageMax: ageRange[1],
                   genderLiked: genderSearched,
@@ -78,7 +78,22 @@ const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
           token: userToken
 
     };
-    console.log(data)
+
+    console.log(userData)
+
+    fetch('http://192.168.10.125:3000/users/saveSettings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userData: userData}),
+      
+    }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          console.log(data.result)
+        }
+      });
+      
+
   };
 
   return (
