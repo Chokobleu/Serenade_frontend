@@ -23,7 +23,7 @@ const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Group>
+      {/* <Stack.Group>
         <Stack.Screen name="LandingScreen" component={LandingScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
@@ -42,7 +42,7 @@ const StackNavigator = () => {
       <Stack.Group>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-      </Stack.Group>
+      </Stack.Group> */}
       <Stack.Group>
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
         <Stack.Screen name="ItsAMatch" component={ItsAMatch} />

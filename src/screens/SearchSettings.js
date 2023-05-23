@@ -21,6 +21,8 @@ import RadioButtonItem from "../components/RadioButtonItem";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import ChooseYourCity from "../components/ChooseYourCity";
 
+console.log("search settings")
+
 const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
   const userToken = useSelector((state) => state.user.token);
   const [genderSearched, setGenderSearched] = useState("");
@@ -63,8 +65,8 @@ const SearchSettings = ({ settingsOpen, closeSearchSettings }) => {
   };
 
   const handleSaveSearchSettings = () => {
-      const data = {
       
+    const data = {
           search:{
                   maxDistance: maxDistance,
                   ageMin: ageRange[0],
