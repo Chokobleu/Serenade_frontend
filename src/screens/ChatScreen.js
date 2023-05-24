@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import React from "react";
 import globalStyles from "../../utils/globalStyles";
 import UserAvatar from "../components/UserAvatar";
@@ -16,112 +17,147 @@ import ChatSenderMessage from "../components/ChatSenderMessage";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Header from "../components/Header";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import User from "../../reducers/User";
+import { useRoute } from '@react-navigation/native';
+
+
 
 const ChatScreen = () => {
   // Initialization calculation scrollview height for display the end
   //-------------------------------------------------------------
+const url = "http://192.168.10.139:3000";
 
   const scrollViewRef = useRef();
   const [isScrollViewAtEnd, setIsScrollViewAtEnd] = useState(false);
   const [messageText, setMessageText] = useState("");
+  const token = useSelector((state) => state.user.token);
+  console.log(token)
+
+  const route = useRoute();
+  const { matchId } = route.params;
 
   //-------------------------------------------------------------
 
-  const [messages, setMessages] = useState([
-    {
-      firstname: "Alice",
-      message: "Salut Bob, comment vas-tu ?",
-      date: "2022-04-10T14:30:00Z",
-    },
-    {
-      firstname: "Bob",
-      message: "Salut Alice, ça va bien, merci ! Et toi ?",
-      date: "2022-04-10T14:32:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "Je vais bien aussi, merci. ",
-      date: "2022-04-10T14:35:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "Quoi de neuf ?",
-      date: "2022-04-10T14:35:00Z",
-    },
-    {
-      firstname: "Bob",
-      message: "Pas grand-chose, et toi ?",
-      date: "2022-04-10T14:38:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "Rien de spécial non plus. Tu as des projets pour ce week-end ?",
-      date: "2022-04-10T14:40:00Z",
-    },
-    {
-      firstname: "Bob",
-      message:
-        "Pas vraiment, je pense que je vais rester à la maison. Et toi ?",
-      date: "2022-04-11T14:42:00Z",
-    },
-    {
-      firstname: "Alice",
-      message:
-        "Je vais probablement sortir avec des amis samedi soir. Tu veux te joindre à nous ?",
-      date: "2022-04-20T14:45:00Z",
-    },
-    {
-      firstname: "Bob",
-      message: "Je ne sais pas encore, je te tiendrai au courant. Tu vas où ?",
-      date: "2022-04-20T14:48:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "On va au restaurant italien près de chez moi, à 20h.",
-      date: "2022-04-20T14:50:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "On va au restaurant italien près de chez moi, à 20h.",
-      date: "2022-04-20T14:50:00Z",
-    },
-    {
-      firstname: "Bob",
-      message: "OK, je te tiens au courant. À plus tard !",
-      date: "2022-04-20T14:52:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "À plus tard !",
-      date: "2022-04-20T14:53:00Z",
-    },
-    {
-      firstname: "Bob",
-      message:
-        "Salut Alice, finalement je ne pourrai pas venir ce soir. Désolé.",
-      date: "2022-04-21T10:00:00Z",
-    },
-    {
-      firstname: "Alice",
-      message: "Pas de soucis, une prochaine fois alors !",
-      date: "2022-04-21T10:02:00Z",
-    },
-    {
-      firstname: "Bob",
-      message: "Oui, absolument. Tu me raconteras comment c'était.",
-      date: "2022-04-21T10:15:00Z",
-    },
-  ]);
+
+  const [messages, setMessages] = useState([])
+  //   {
+  //     firstname: "Alice",
+  //     message: "Salut Bob, comment vas-tu ?",
+  //     date: "2022-04-10T14:30:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message: "Salut Alice, ça va bien, merci ! Et toi ?",
+  //     date: "2022-04-10T14:32:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "Je vais bien aussi, merci. ",
+  //     date: "2022-04-10T14:35:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "Quoi de neuf ?",
+  //     date: "2022-04-10T14:35:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message: "Pas grand-chose, et toi ?",
+  //     date: "2022-04-10T14:38:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "Rien de spécial non plus. Tu as des projets pour ce week-end ?",
+  //     date: "2022-04-10T14:40:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message:
+  //       "Pas vraiment, je pense que je vais rester à la maison. Et toi ?",
+  //     date: "2022-04-11T14:42:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message:
+  //       "Je vais probablement sortir avec des amis samedi soir. Tu veux te joindre à nous ?",
+  //     date: "2022-04-20T14:45:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message: "Je ne sais pas encore, je te tiendrai au courant. Tu vas où ?",
+  //     date: "2022-04-20T14:48:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "On va au restaurant italien près de chez moi, à 20h.",
+  //     date: "2022-04-20T14:50:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "On va au restaurant italien près de chez moi, à 20h.",
+  //     date: "2022-04-20T14:50:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message: "OK, je te tiens au courant. À plus tard !",
+  //     date: "2022-04-20T14:52:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "À plus tard !",
+  //     date: "2022-04-20T14:53:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message:
+  //       "Salut Alice, finalement je ne pourrai pas venir ce soir. Désolé.",
+  //     date: "2022-04-21T10:00:00Z",
+  //   },
+  //   {
+  //     firstname: "Alice",
+  //     message: "Pas de soucis, une prochaine fois alors !",
+  //     date: "2022-04-21T10:02:00Z",
+  //   },
+  //   {
+  //     firstname: "Bob",
+  //     message: "Oui, absolument. Tu me raconteras comment c'était.",
+  //     date: "2022-04-21T10:15:00Z",
+  //   },
+  // ]);
 
   // Diplay end of scrollview at the first opening
   //-------------------------------------------------------------
+
+
+
+  console.log(matchId)
+
+
+
+  useEffect(() => {
+    console.log("iouezoru")
+
+    fetch(`${url}/users/chat/oneRoomMessages`, {
+      
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matchId }),
+    }).then(response => response.json())
+      .then(data => {
+        // setMessages(data.messages)
+        console.log("coucou")
+        
+
+      });
+
+  }, []);
 
   useEffect(() => {
     if (isScrollViewAtEnd) {
       scrollViewRef.current.scrollToEnd({ animated: false });
     }
   }, [isScrollViewAtEnd]);
-
+  
   const handleScrollViewLayout = () => {
     setIsScrollViewAtEnd(true);
   };
@@ -133,9 +169,33 @@ const ChatScreen = () => {
   // Send messages
   //--------------------------------------------------------------
 
+  // const conversationId = "";
+  // const userId = "";
+  // const recipientId = "";
+  const date = new Date();
+
   const handleSendMessage = () => {
-    console.log(messageText);
-    setMessageText("");
+    
+    matchId = "c"
+    userToken = token
+
+    const messageData = {
+      author: token,
+      content: messageText,
+      date: date
+    };
+
+    fetch(`${url}/users/chat/addMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageData, matchId, userToken }),
+    }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          
+        }
+  
+      });    setMessageText("");
   };
 
   // Dislike

@@ -8,8 +8,33 @@ import {
 import React from "react";
 import globalStyles from "../../utils/globalStyles";
 import CardMessageContainer from "../components/CardMessageContainer";
+import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
+import moment from "moment/moment";
+
+const url = "http://192.168.1.23:3000";
+
+
+
 
 const MessagesScreen = ({ navigation }) => {
+
+  const [dataMessages, setDataMessages] = useState([]);
+
+  useEffect(() => {
+
+    fetch(`${url}/users/chat/allMessages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    }).then(response => response.json())
+      .then(data => {
+        setDataMessages(data)
+
+      });
+
+  }, []);
+
   const photosData1 = [
     {
       imageUrl: "https://static.lacapsule.academy/faceup/picture1.jpg",
@@ -61,22 +86,34 @@ const MessagesScreen = ({ navigation }) => {
     },
   ];
 
-  const message = photosData1.map((data, i) => {
+  const token = useSelector((state) => state.user.token);
+
+  const message = dataMessages.map((data, i) => {
+    const time = moment(data.lastMessage.date).format('LT');
+    if(!time){
+      time = "00:00 AM"
+    }
+
+    
     return (
+
       <TouchableOpacity
-        key={i}
+      key={i}
         onPress={() => {
-          navigation.navigate("ChatScreen");
+          navigation.navigate("ChatScreen", { matchId: data.id });
         }}
       >
+
         <CardMessageContainer
           key={i}
-          image={data.imageUrl}
-          name={data.name}
-          message={data.message}
-          time={data.time}
+          image={data.user.pictures[0]}
+          name={data.user.name}
+          message={data.lastMessage.content}
+          time={time}
         />
+
       </TouchableOpacity>
+
     );
   });
 

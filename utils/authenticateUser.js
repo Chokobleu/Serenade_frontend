@@ -1,4 +1,4 @@
-const url = "http://192.168.10.125:3000";
+const url = "http://192.168.1.23:3000";
 
 const signupUser = async ({
   email,
