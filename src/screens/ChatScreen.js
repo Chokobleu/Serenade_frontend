@@ -134,23 +134,23 @@ const ChatScreen = () => {
   //-------------------------------------------------------------
 
 
+const loadMessages=()=>{
+  fetch(`${url}/users/chat/oneRoomMessages`, {
 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ matchId }),
+  }).then(response => response.json())
+    .then(data => {
+      setMessages(data.messages)
 
+    });
+
+}
 
 
   useEffect(() => {
-
-    fetch(`${url}/users/chat/oneRoomMessages`, {
-
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ matchId }),
-    }).then(response => response.json())
-      .then(data => {
-        setMessages(data.messages)
-
-      });
-
+    loadMessages()
   }, []);
 
   useEffect(() => {
@@ -185,14 +185,17 @@ const ChatScreen = () => {
       date: date
     };
 
+
     fetch(`${url}/users/chat/addMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messageData, matchId, userToken }),
     }).then(response => response.json())
       .then(data => {
-        if (data.result) {
+        console.log(messages)
 
+        if (data.result) {
+          loadMessages()
         }
 
       }); setMessageText("");
@@ -214,6 +217,7 @@ const ChatScreen = () => {
     if (!time) {
       time = "00:00 AM"
     }
+
     const image = data.author.pictures[0];
 
     if (data.author.token != token) {
@@ -288,12 +292,12 @@ const ChatScreen = () => {
 
       <View keyboardShouldPersistTaps="handled" style={styles.sendContainer}>
         <View style={styles.inputContainer}>
-          <FontAwesome
+          {/* <FontAwesome
             name="paperclip"
             style={styles.papeclip}
             color="#EC7955"
             size={26}
-          />
+          /> */}
           <TextInput
             onChangeText={(value) => setMessageText(value)}
             placeholder={"Type a message"}

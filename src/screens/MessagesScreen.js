@@ -20,6 +20,8 @@ const url = "http://192.168.10.170:3000";
 const MessagesScreen = ({ navigation }) => {
 
   const [dataMessages, setDataMessages] = useState([]);
+  const token = useSelector((state) => state.user.token);
+
 
   useEffect(() => {
 
@@ -35,60 +37,9 @@ const MessagesScreen = ({ navigation }) => {
 
   }, []);
 
-  const photosData1 = [
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture1.jpg",
-      name: "John Doe",
-      message: "Hello there!",
-      time: "10:30 AM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture2.jpg",
-      name: "Jane Smith",
-      message: "Nice to meet you!",
-      time: "11:45 AM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture3.jpg",
-      name: "Michael Johnson",
-      message: "How are you?",
-      time: "02:15 PM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture4.jpg",
-      name: "Emily Brown",
-      message: "Enjoying the day!",
-      time: "05:20 PM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture1.jpg",
-      name: "David Wilson",
-      message: "What are your hobbies?",
-      time: "08:10 PM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture2.jpg",
-      name: "Jane Smith",
-      message: "Nice to meet you!",
-      time: "11:45 AM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture3.jpg",
-      name: "Michael Johnson",
-      message: "How are you?",
-      time: "02:15 PM",
-    },
-    {
-      imageUrl: "https://static.lacapsule.academy/faceup/picture4.jpg",
-      name: "Emily Brown",
-      message: "Enjoying the day!",
-      time: "05:20 PM",
-    },
-  ];
-
-  const token = useSelector((state) => state.user.token);
 
   const message = dataMessages.map((data, i) => {
+    if(data.lastMessage){
     const time = moment(data.lastMessage.date).format('LT');
     if(!time){
       time = "00:00 AM"
@@ -115,6 +66,7 @@ const MessagesScreen = ({ navigation }) => {
       </TouchableOpacity>
 
     );
+  }
   });
 
   return (
