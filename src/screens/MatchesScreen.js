@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, Image, Text } from "react-native";
+import { View, StyleSheet, ScrollView, Image, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import globalStyles from "../../utils/globalStyles";
 import SwitchSelector from "react-native-switch-selector";
@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import LoadingScreen from "./LoadingScreen";
 import NoMoreProfiles from "./NoMoreProfiles";
 
-const MatchesScreen = ({ route }) => {
+const MatchesScreen = ({ navigation }) => {
   const userToken = useSelector((state) => state.user.token);
   const [isLoading, setIsLoading] = useState(false);
   const [userMatches, setUserMatches] = useState([]);
@@ -30,7 +30,6 @@ const MatchesScreen = ({ route }) => {
     const whoLikesMe = navigationState.routes.find(
       (route) => route.name === "HomeScreen"
     )?.params?.whoLikesMe;
-
     if (whoLikesMe) {
       // Use the data from home
       setPeopleWhoLikesMe(whoLikesMe);
@@ -61,23 +60,31 @@ const MatchesScreen = ({ route }) => {
 
   const myLikes = peopleWhoLikesMe?.map((data, i) => {
     return (
-      <CardProfilContainer
-        key={i}
-        city={data.location.city}
-        picture={data.pictures[0]}
-        {...data}
-      />
+      <TouchableOpacity
+        style={{ width: '100%', margin: 5 }}
+        onPress={() => navigation.navigate('DisplayProfileInfo', { user: data })}>
+        <CardProfilContainer
+          key={i}
+          city={data.location.city}
+         picture={data.pictures[0]}
+          {...data}
+        />
+      </TouchableOpacity>
     );
   });
 
   const myMatches = userMatches?.map((data, i) => {
     return (
-      <CardProfilContainer
-        key={i}
-        city={data.location.city}
-        picture={data.pictures[0]}
-        {...data}
-      />
+      <TouchableOpacity
+        style={{ width: '100%', margin: 5 }}
+        onPress={() => navigation.navigate('DisplayProfileInfo', { user: data })}>
+        <CardProfilContainer
+          key={i}
+          city={data.location.city}
+          picture={data.pictures[0]}
+          {...data}
+        />
+      </TouchableOpacity>
     );
   });
 
@@ -123,7 +130,7 @@ const MatchesScreen = ({ route }) => {
               </Text>
 
               <ScrollView contentContainerStyle={styles.profilcontainer}>
-                {myMatches}
+                  {myMatches}
               </ScrollView>
             </>
           )}
@@ -136,7 +143,7 @@ const MatchesScreen = ({ route }) => {
               </Text>
 
               <ScrollView contentContainerStyle={styles.profilcontainer}>
-                {myLikes}
+                  {myLikes}
               </ScrollView>
             </>
           )}

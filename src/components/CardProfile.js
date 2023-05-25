@@ -13,7 +13,7 @@ export default function CardProfilContainer({
   picture,
 }) {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <View style={styles.cardContainer}>
       <Image
         source={{
           uri: picture,
@@ -42,7 +42,7 @@ export default function CardProfilContainer({
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 

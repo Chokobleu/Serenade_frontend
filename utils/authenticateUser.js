@@ -1,4 +1,4 @@
-const url = "http://192.168.43.62:3000";
+const url = "http://192.168.10.172:3000";
 
 const signupUser = async ({
   email,
@@ -207,7 +207,28 @@ const getMatches = async (userToken) => {
   }
 };
 
+const removeMatch = async (userToken, dismatchedUserToken, matchId) => {
+  try {
+    const response = await fetch("/action/dismatch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userToken,
+        dismatchedUserToken,
+        matchId,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
+  removeMatch,
   signupUser,
   loginUser,
   updateUserPictures,
