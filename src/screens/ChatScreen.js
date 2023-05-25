@@ -19,22 +19,27 @@ import Header from "../components/Header";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import User from "../../reducers/User";
 import { useRoute } from '@react-navigation/native';
+import moment from "moment/moment";
+
+
+const url = "http://192.168.10.170:3000";
 
 
 
 const ChatScreen = () => {
   // Initialization calculation scrollview height for display the end
   //-------------------------------------------------------------
-const url = "http://192.168.10.139:3000";
 
   const scrollViewRef = useRef();
   const [isScrollViewAtEnd, setIsScrollViewAtEnd] = useState(false);
   const [messageText, setMessageText] = useState("");
   const token = useSelector((state) => state.user.token);
-  console.log(token)
 
   const route = useRoute();
   const { matchId } = route.params;
+
+  let recipientAvatar = "";
+  let recipientName = "";
 
   //-------------------------------------------------------------
 
@@ -130,23 +135,19 @@ const url = "http://192.168.10.139:3000";
 
 
 
-  console.log(matchId)
 
 
 
   useEffect(() => {
-    console.log("iouezoru")
 
     fetch(`${url}/users/chat/oneRoomMessages`, {
-      
+
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ matchId }),
     }).then(response => response.json())
       .then(data => {
-        // setMessages(data.messages)
-        console.log("coucou")
-        
+        setMessages(data.messages)
 
       });
 
@@ -157,14 +158,14 @@ const url = "http://192.168.10.139:3000";
       scrollViewRef.current.scrollToEnd({ animated: false });
     }
   }, [isScrollViewAtEnd]);
-  
+
   const handleScrollViewLayout = () => {
     setIsScrollViewAtEnd(true);
   };
 
   //--------------------------------------------------------------
-  const avatarImage =
-    "https://images.pexels.com/photos/1382726/pexels-photo-1382726.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+  // const avatarImage =
+  //   "https://images.pexels.com/photos/1382726/pexels-photo-1382726.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
   // Send messages
   //--------------------------------------------------------------
@@ -175,8 +176,7 @@ const url = "http://192.168.10.139:3000";
   const date = new Date();
 
   const handleSendMessage = () => {
-    
-    matchId = "c"
+
     userToken = token
 
     const messageData = {
@@ -192,10 +192,10 @@ const url = "http://192.168.10.139:3000";
     }).then(response => response.json())
       .then(data => {
         if (data.result) {
-          
+
         }
-  
-      });    setMessageText("");
+
+      }); setMessageText("");
   };
 
   // Dislike
@@ -209,23 +209,33 @@ const url = "http://192.168.10.139:3000";
   //--------------------------------------------------------------
 
   const allMessages = messages.map((data, i) => {
-    const date = new Date(data.date);
-    const hours = date.getHours() + ":" + date.getMinutes() + " am";
 
-    if (data.firstname == "Alice") {
+    const time = moment(data.date).format('LT');
+    if (!time) {
+      time = "00:00 AM"
+    }
+    const image = data.author.pictures[0];
+
+    if (data.author.token != token) {
+      if (recipientAvatar == "") {
+        recipientAvatar = image;
+      }
+      if (recipientName == "") {
+        recipientName = data.author.name;
+      }
       return (
         <ChatRecipientMessage
           key={i}
-          date={hours}
-          text={data.message}
+          date={time}
+          text={data.content}
           connected={true}
           size={40}
-          avatarImage={avatarImage}
+          avatarImage={recipientAvatar}
           avatarDisplay={true}
         />
       );
     } else {
-      return <ChatSenderMessage key={i} date={hours} text={data.message} />;
+      return <ChatSenderMessage key={i} date={time} text={data.content} />;
     }
   });
 
@@ -243,7 +253,7 @@ const url = "http://192.168.10.139:3000";
             <UserAvatar
               connected={true}
               size={70}
-              avatarImage={avatarImage}
+              avatarImage={recipientAvatar}
               avatarDisplay={true}
             />
           </View>
@@ -261,7 +271,7 @@ const url = "http://192.168.10.139:3000";
           </View>
         </View>
 
-        <Text style={styles.headerText}>Elisabeth</Text>
+        <Text style={styles.headerText}>{ recipientName }</Text>
         <View style={styles.headerBorder} />
       </View>
 
@@ -270,6 +280,7 @@ const url = "http://192.168.10.139:3000";
         className="p-6"
         ref={scrollViewRef}
         onLayout={handleScrollViewLayout}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
         contentContainerStyle={styles.scrollContentContainer}
       >
         {allMessages}

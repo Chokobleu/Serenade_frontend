@@ -12,7 +12,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment/moment";
 
-const url = "http://192.168.1.23:3000";
+const url = "http://192.168.10.170:3000";
 
 
 
